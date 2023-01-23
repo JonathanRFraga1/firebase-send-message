@@ -1,0 +1,11 @@
+/node_modules
+/src/configs/*
+/logs/*
+/.vscode
+/.idea
+.env
+
+# except
+!/src/configs/.gitkeep
+!/logs/.gitkeep
+!/src/configs/libs/*
