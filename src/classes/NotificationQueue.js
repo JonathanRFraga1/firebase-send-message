@@ -1,33 +1,32 @@
 import Queue from "bull";
 import redisConfig from "../configs/libs/redis.js";
-import sendNotification from "../jobs/sendNotification.js";
-import FormatNotification from "../models/FormatNotification.js";
+import * as jobs from "../jobs/index.js";
+import logger from "./Logger.js";
 
-export default class NotificationQueue {
-    constructor() {
-        // initialize queue
-        this.queue = new Queue('Notifications');
-        // add a worker
-        this.queue.process('notification', job => {
-            this.dispatchNotification(job)
+// Create a queue for each job
+const queues = Object.values(jobs).map(job => ({
+    bull: new Queue(job.key, redisConfig),
+    name: job.key,
+    options: job.options,
+    handle: job.handle,
+}));
+
+export default {
+    queues,
+    add(name, data) {
+        const queue = this.queues.find(queue => queue.name === name);
+        return queue.bull.add(data, queue.options);
+    },
+    process() {
+        return this.queues.forEach(queue => {
+            queue.bull.process(queue.handle);
+
+            queue.bull.on('failed', (job, err) => {
+                logger.error({
+                    message: `Job ${queue.name} failed: ${err.message}`,
+                    project: "Queue"
+                })
+            })
         })
     }
-
-    addNotificationToQueue(data) {
-        this.queue.add('notification', data)
-    }
-
-    async dispatchNotification(job) {
-        const { data, project } = job.data;
-        
-        FormatNotification.sendNotification(data, project)
-            .then(results => {
-                if (results == 'Error: project not found') {
-                    return;
-                }
-
-                console.log(results);
-            }
-        )
-    }
-}
+};

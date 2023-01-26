@@ -1,3 +1,4 @@
+import Logger from "../classes/Logger.js";
 import ProjectModel from "../models/ProjectModel.js";
 
 class ProjectController {

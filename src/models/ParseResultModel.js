@@ -1,5 +1,12 @@
-class ParseResult {
-    static parse = (result, registrationTokens) => {
+class ParseResultModel {
+    /**
+     * Function to parse the result of a notification
+     * 
+     * @param {Object} result 
+     * @param {Array} registrationTokens 
+     * @returns {Object} result
+     */
+    static parseNotificationResult = (result, registrationTokens) => {
         let success = result.successCount;
         let failure = result.failureCount;
 
@@ -28,4 +35,4 @@ class ParseResult {
     }
 }
 
-export default ParseResult;
+export default ParseResultModel;
