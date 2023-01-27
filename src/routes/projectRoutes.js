@@ -1,10 +1,12 @@
-import express from "express";
-import ProjectController from "../controllers/ProjectController.js";
+const express = require("express");
+const ProjectController = require("../controllers/ProjectController.js");
+
+let project = new ProjectController();
 
 const router = express.Router();
 
 router
-    .post('/project', ProjectController.makeProject)
-    .put('/project', ProjectController.updateProject)
+    .post('/project', project.makeProject)
+    .put('/project', project.updateProject)
 
-export default router;
+exports = router;

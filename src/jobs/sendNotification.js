@@ -1,9 +1,10 @@
-import NotificationModel from "../models/NotificationModel.js";
-import ParseResultModel from "../models/ParseResultModel.js";
-import mysql from "mysql2/promise";
-import Logger from "../classes/Logger.js";
+const NotificationModel = require("../models/NotificationModel.js");
+const ParseResultModel = require("../models/ParseResultModel.js");
+const mysql = require("mysql2/promise");
+const Logger = require("../classes/Logger.js");
+const logger = new Logger();
 
-export default {
+module.exports = {
     key: 'Notification',
     options: {
         // delay: 5000,
@@ -23,11 +24,14 @@ export default {
 
         let connection = null;
 
+        let model = new NotificationModel();
+        let parseModel = new ParseResultModel();
+
         try {
             // Create connection to database
             connection = await mysql.createConnection(projectCredentials);
         } catch (error) {
-            Logger.error(
+            logger.error(
                 {
                     message: `Error connecting to database`,
                     error: error.message,
@@ -81,7 +85,7 @@ export default {
                     devices.push(rows[i]);
                 }
             } catch (error) {
-                Logger.error(
+                logger.error(
                     {
                         message: `Error getting clients tags`,
                         error: error.message,
@@ -120,10 +124,10 @@ export default {
                     }
 
                     // Send notification
-                    let results = await NotificationModel.sendNotificationSynced(dataNotification, project);
+                    let results = await model.sendNotificationSynced(dataNotification, project);
 
                     // Parse results
-                    results = ParseResultModel.parseNotificationResult(results, devices);
+                    results = parseModel.parseNotificationResult(results, devices);
 
                     arrayResult = arrayResult.concat(results);
 
@@ -138,10 +142,10 @@ export default {
                 for (let i = 0; i < tokens.length; i++) {
                     try {
                         let sqlUpdate = `UPDATE ut_devices SET status = 2 WHERE registration_id = '${tokens[i].registration_id}'`;
-                        //Logger.info(sqlUpdate, project);
+                        //logger.info(sqlUpdate, project);
                         await connection.query(sqlUpdate);
                     } catch (error) {
-                        Logger.error(
+                        logger.error(
                             {
                                 message: `Error updating device status`,
                                 error: error.message,
@@ -200,11 +204,11 @@ export default {
 
                 [rows, fields] = await connection.query(sqlUpdateNotification);
 
-                //Logger.info(rows, project);
+                //logger.info(rows, project);
 
                 connection.destroy();
         } catch (error) {
-           Logger.error(
+           logger.error(
                 {
                     message: `Error sending notification`,
                     error: error.message,

@@ -1,15 +1,15 @@
-import NotificationQueue from "../classes/NotificationQueue.js";
-import ProjectModel from "./ProjectModel.js";
-import admin from "firebase-admin";
-import mysql from "mysql2/promise";
-import Logger from "../classes/Logger.js";
+const NotificationQueue = require("../classes/NotificationQueue.js");
+const ProjectModel = require("./ProjectModel.js");
+const admin = require("firebase-admin");
+const mysql = require("mysql2/promise");
+const Logger = require("../classes/Logger.js");
 
 const priority = 'high';
 const secondsOfDay = 60 * 60 * 24;
 let apps = [];
 
 class NotificationModel {
-    static sendNotificationSynced = async (data, project) => {
+    async sendNotificationSynced (data, project) {
         let registrationTokens = data.devices;
         let message = {
             notification: {
@@ -19,7 +19,7 @@ class NotificationModel {
         };
         let options = {
             priority: priority,
-            timeToLive: data.notification.time_to_live ?? secondsOfDay
+            timeToLive: data.notification.time_to_live == undefined ? secondsOfDay : data.notification.time_to_live
         };
 
         let app;
@@ -67,7 +67,7 @@ class NotificationModel {
         }
     }
 
-    static dispachNotificationAsync = async (project) => {
+    async dispachNotificationAsync (project) {
         try {
             let dbCredentials = process.env.MASTERDB;
             dbCredentials = JSON.parse(dbCredentials);
@@ -128,7 +128,7 @@ class NotificationModel {
                     notification: {
                         title: notification.titulo,
                         message: notification.mensagem,
-                        time_to_live: notification.ttl ?? secondsOfDay
+                        time_to_live: notification.ttl == undefined ? secondsOfDay : notification.ttl
                     },
                     tags: notification.tags,
                     project: project,
@@ -147,4 +147,4 @@ class NotificationModel {
 
 }
 
-export default NotificationModel;
+module.exports = NotificationModel;

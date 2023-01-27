@@ -1,8 +1,8 @@
-import Logger from "../classes/Logger.js";
-import ProjectModel from "../models/ProjectModel.js";
+const Logger = require("../classes/Logger.js");
+const ProjectModel = require("../models/ProjectModel.js");
 
 class ProjectController {
-    static makeProject(req, res) {
+    makeProject(req, res) {
         let body = req.body;
 
         let project = req.headers.project;
@@ -28,7 +28,7 @@ class ProjectController {
         res.status(201).json({ message: 'Project created' });
     }
 
-    static updateProject(req, res) {
+    updateProject(req, res) {
         let body = req.body;
 
         let project = req.headers.project;
@@ -55,4 +55,4 @@ class ProjectController {
     }
 }
 
-export default ProjectController;
+module.exports = ProjectController;

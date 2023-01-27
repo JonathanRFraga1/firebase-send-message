@@ -1,5 +1,6 @@
-import fs from "fs";
-import Logger from "../classes/Logger.js";
+const fs = require("fs");
+const Logger = require("../classes/logger.js");
+const logger = new Logger();
 
 class ProjectModel {
     static returnFirebaseConfig(project) {
@@ -15,7 +16,7 @@ class ProjectModel {
 
     static createProjectJson(project, firebaseConfig) {
         if (fs.existsSync(`./src/configs/${project}.json`)) {
-            Logger.custom('Project already exists', 'Project', 'error')
+            logger.custom('Project already exists', 'Project', 'error')
 
             return 'Error: project already exists';
         }
@@ -23,18 +24,18 @@ class ProjectModel {
         try {
             fs.writeFileSync(`./src/configs/${project}.json`, JSON.stringify(firebaseConfig));
 
-            Logger.info('Project created', project)
+            logger.info('Project created', project)
 
             return 'Project created';
         } catch (error) {
-            Logger.error(error, project)
+            logger.error(error, project)
             return 'Error: internal server error';
         }
     }
 
     static updateProjectJson(project, firebaseConfig) {
         if (!fs.existsSync(`./src/configs/${project}.json`)) {
-            Logger.custom('Project not found - ' + project, 'Project', 'error')
+            logger.custom('Project not found - ' + project, 'Project', 'error')
 
             return 'Error: project not found';
         }
@@ -42,15 +43,15 @@ class ProjectModel {
         try {
             fs.writeFileSync(`./src/configs/${project}.json`, JSON.stringify(firebaseConfig));
 
-            Logger.info('Project updated', project)
+            logger.info('Project updated', project)
 
             return 'Project updated';
         } catch (error) {
-            Logger.error(error, project)
+            logger.error(error, project)
             
             return 'Error: internal server error';
         }
     }
 }
 
-export default ProjectModel;
+module.exports = ProjectModel;

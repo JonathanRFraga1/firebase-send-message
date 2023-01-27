@@ -1,8 +1,8 @@
-import fs from "fs";
-import os from "os";
-import { stringify } from "querystring";
+const fs = require("fs");
+const os = require("os");
+const stringify = require("querystring").stringify;
 class Logger {
-    static format = (message) => {
+    format(message) {
         let now = new Date();
         let dayWithZero = now.getDate() < 10 ? "0" + now.getDate() : now.getDate();
         let monthWithZero = (now.getMonth() + 1) < 10 ? "0" + (now.getMonth() + 1) : (now.getMonth() + 1);
@@ -11,13 +11,13 @@ class Logger {
         let secondWithZero = now.getSeconds() < 10 ? "0" + now.getSeconds() : now.getSeconds();
         let dateTime = `${now.getFullYear()}-${monthWithZero}-${dayWithZero} ${hourWithZero}:${minuteWithZero}:${secondWithZero}`;
         message = typeof message === "object" ? JSON.stringify(message) : message;
-        message = `[${dateTime}] - ` + message ;
+        message = `[${dateTime}] - ` + message;
         return message;
     }
 
-    static error = (message, project) => {
+    error(message, project) {
         try {
-            message = Logger.format(message);
+            message = this.format(message);
             console.error(message);
             message = `${message}${os.EOL}`;
             fs.existsSync("./logs/error") || fs.mkdirSync("./logs/error");
@@ -30,9 +30,9 @@ class Logger {
         }
     }
 
-    static info = (message, project) => {
+    info(message, project) {
         try {
-            message = Logger.format(message);
+            message = this.format(message);
             console.info(message);
             message = `${message}${os.EOL}`;
             fs.existsSync("./logs/info") || fs.mkdirSync("./logs/info");
@@ -45,9 +45,9 @@ class Logger {
         }
     }
 
-    static custom = (message, project, type) => {
+    custom(message, project, type) {
         try {
-            message = Logger.format(message);
+            message = this.format(message);
             console.log(message);
             message = `${message}${os.EOL}`;
             fs.existsSync("./logs/custom") || fs.mkdirSync("./logs/custom");
@@ -60,9 +60,9 @@ class Logger {
         }
     }
 
-    static system = (message) => {
+    system(message) {
         try {
-            message = Logger.format(message);
+            message = this.format(message);
             console.log(message);
             message = `${message}${os.EOL}`;
             fs.existsSync("./logs") || fs.mkdirSync("./logs");
@@ -76,4 +76,4 @@ class Logger {
     }
 }
 
-export default Logger;
+module.exports = Logger;

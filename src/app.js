@@ -1,8 +1,17 @@
-import express from "express";
-import routes from "./routes/index.js";
+const express = require("express");
+const index = require("./routes/index.js");
 
-const app = express();
-app.use(express.json())
-routes(app);
+let routesIndex = new index();
 
-export default app;
+class App {
+    routes() {
+        const app = express();
+        app.use(express.json())
+        routesIndex.routes(app);    
+        return app;
+    }
+}
+
+
+
+module.exports = App

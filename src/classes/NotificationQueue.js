@@ -1,7 +1,8 @@
-import Queue from "bull";
-import redisConfig from "../configs/libs/redis.js";
-import * as jobs from "../jobs/index.js";
-import logger from "./Logger.js";
+const Queue = require("bull");
+const redisConfig = require("../configs/libs/redis.js");
+const jobs = require("../jobs/index.js");
+const Logger = require("./Logger.js");
+const logger = new Logger();
 
 // Create a queue for each job
 const queues = Object.values(jobs).map(job => ({
@@ -11,7 +12,7 @@ const queues = Object.values(jobs).map(job => ({
     handle: job.handle,
 }));
 
-export default {
+module.exports = {
     queues,
     add(name, data) {
         const queue = this.queues.find(queue => queue.name === name);

@@ -1,5 +1,5 @@
-import "dotenv/config";
-import Queue from "./src/classes/NotificationQueue.js";
-import sendNotification from "./src/jobs/sendNotification.js";
+require("dotenv/config");
+const Queue = require("./src/classes/NotificationQueue.js");
+const sendNotification = require("./src/jobs/sendNotification.js");
 
 Queue.process(sendNotification.handle);

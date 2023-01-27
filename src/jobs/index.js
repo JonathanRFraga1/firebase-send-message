@@ -1,1 +1,5 @@
-export {default as sendNotification} from "./sendNotification.js";
+const sendNotification = require("./sendNotification.js");
+
+module.exports = {
+    sendNotification,
+};

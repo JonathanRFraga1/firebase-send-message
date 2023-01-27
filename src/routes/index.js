@@ -1,17 +1,43 @@
-import express from "express";
-import notifications from "./notificationsRoutes.js"
-import projects from "./projectRoutes.js"
+const express = require("express");
+const notifications = require("./notificationsRoutes.js");
+const projects = require("./projectRoutes.js");
+const NotificationController = require("../controllers/NotificationsController.js");
+const ProjectController = require("../controllers/ProjectController.js");
 
-const routes = (app) => {
-  app.route('/').get((req, res) => {
-    res.status(200).send({titulo: "Notificações Firebase"})
-  })
 
-  app.use(
-    express.json(),
-    notifications,
-    projects
-  )
+class Index {
+  routes(app) {
+    let notification = new NotificationController();
+    let project = new ProjectController();
+
+    app.route('/')
+      .get((req, res) => {
+        res.status(200).send({ titulo: "Notificações Firebase" })
+      });
+    app.route('/notification')
+      .post((req, res) => {
+        notification.sendNotification(req, res)
+      });
+    app.route('/dispatch-notification')
+      .post((req, res) => {
+        notification.dispatchNotification(req, res)
+      })
+    app.route('/dispatch-notification')
+      .post((req, res) => {
+        project.makeProject(req, res)
+      })
+    app.route('/project')
+      .post((req, res) => {
+        project.makeProject(req, res)
+      })
+      .put((req, res) => {
+        project.updateProject(req, res)
+      })
+
+    app.use(
+      express.json(),
+    )
+  }
 }
 
-export default routes
+module.exports = Index

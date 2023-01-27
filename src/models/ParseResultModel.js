@@ -6,7 +6,7 @@ class ParseResultModel {
      * @param {Array} registrationTokens 
      * @returns {Object} result
      */
-    static parseNotificationResult = (result, registrationTokens) => {
+    parseNotificationResult(result, registrationTokens) {
         let success = result.successCount;
         let failure = result.failureCount;
 
@@ -35,4 +35,4 @@ class ParseResultModel {
     }
 }
 
-export default ParseResultModel;
+module.exports = ParseResultModel;
