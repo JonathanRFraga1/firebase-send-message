@@ -1,5 +1,5 @@
 const fs = require("fs");
-const Logger = require("../classes/logger.js");
+const Logger = require("../classes/Logger.js");
 const logger = new Logger();
 
 class ProjectModel {

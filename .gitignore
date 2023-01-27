@@ -8,4 +8,4 @@
 # except
 !/src/configs/.gitkeep
 !/logs/.gitkeep
-!/src/configs/libs/*
+!/src/configs/libs
