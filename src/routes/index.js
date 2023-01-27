@@ -1,6 +1,4 @@
 const express = require("express");
-const notifications = require("./notificationsRoutes.js");
-const projects = require("./projectRoutes.js");
 const NotificationController = require("../controllers/NotificationsController.js");
 const ProjectController = require("../controllers/ProjectController.js");
 
@@ -14,18 +12,22 @@ class Index {
       .get((req, res) => {
         res.status(200).send({ titulo: "Notificações Firebase" })
       });
+
     app.route('/notification')
       .post((req, res) => {
         notification.sendNotification(req, res)
       });
+
     app.route('/dispatch-notification')
       .post((req, res) => {
         notification.dispatchNotification(req, res)
       })
+
     app.route('/dispatch-notification')
       .post((req, res) => {
         project.makeProject(req, res)
       })
+
     app.route('/project')
       .post((req, res) => {
         project.makeProject(req, res)

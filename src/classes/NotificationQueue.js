@@ -6,7 +6,7 @@ const logger = new Logger();
 
 // Create a queue for each job
 const queues = Object.values(jobs).map(job => ({
-    bull: new Queue(job.key, redisConfig),
+    bull: new Queue(job.key, {redis: redisConfig}),
     name: job.key,
     options: job.options,
     handle: job.handle,
