@@ -8,6 +8,7 @@ Serviço de disparo de notificações para o Firebase Cloud
 
 ##### *Funções Síncronas*
 -- Disparo de notificações para um único dispositivo
+
 -- Disparo de notificações para multiplos dispositivos
 
 ##### *Funções Assíncronas*
