@@ -201,6 +201,8 @@ export default {
                 [rows, fields] = await connection.query(sqlUpdateNotification);
 
                 //Logger.info(rows, project);
+
+                connection.destroy();
         } catch (error) {
            Logger.error(
                 {
