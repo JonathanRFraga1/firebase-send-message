@@ -24,3 +24,4 @@ Serviço de disparo de notificações para o Firebase Cloud
 - Crie o **.env** a partir do **example.env**
 - `$ npm run dev`
 - Adicione as configurações dos projetos firebase na rota `POST /project`
+- Faça o download da Private Key do projeto em `https://console.firebase.google.com/u/1/project/_/settings/serviceaccounts/adminsdk?hl=pt-br`
